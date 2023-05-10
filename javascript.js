@@ -18,14 +18,28 @@ function playRound(playerSelection, computerSelection){
     else return `Tie!` // tie
 }
 
-function game(){
+const buttons = document.querySelectorAll('.button');
+let playerScore = 0, computerScore = 0;
 
-    let playerScore = 0;
-    for(let i = 0; i < 5; i++){
-        let result = playRound(prompt(), getComputerChoice())
-        console.log(result)
-        if(result.includes("Win")) playerScore++
+buttons.forEach(button => button.addEventListener('click', function(event){
+
+    const text = document.querySelector('.textbox');
+    const result = playRound(button.id, getComputerChoice());
+
+    text.textContent = result;
+    if(result.includes('Win')) playerScore++;
+    else if(result.includes('Lose')) computerScore++;
+
+    const scoreboard = document.querySelector('.scoreboard');
+    scoreboard.textContent = `Player: ${playerScore} Computer: ${computerScore}`;
+
+    if(playerScore > 4){
+        scoreboard.textContent = 'Player Wins! Press any button to continue.';
+        playerScore = 0, computerScore = 0;
     }
-}
+    if(computerScore > 4){
+        scoreboard.textContent = 'Computer Wins. Press any button to continue.'
+        playerScore = 0, computerScore = 0;
+    }
 
-game()
+}));
